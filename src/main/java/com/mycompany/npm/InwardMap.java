@@ -7,6 +7,7 @@ package com.mycompany.npm;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -27,9 +28,8 @@ import java.io.IOException;
 public class InwardMap
 {
 
-    String datafile;
-    int itemcount;
-
+//    String datafile;
+//    int itemcount;
     List<List<Object[]>> list = new ArrayList<>();
 
     public void addEntry(int itemid, Date d, int purchase_price, int sale_price)
@@ -72,25 +72,28 @@ public class InwardMap
 
         if (entry == null)
         {
-            outputs[0] = outputs[1] = 0;
+            outputs[0] = outputs[1] = outputs[2] = 0;
         } else
         {
-            outputs[0] = (int) entry[1];
-            outputs[1] = (int) entry[2];
+            outputs[0] = (int) entry[1]; //purchase
+            outputs[1] = (int) entry[2]; //sale
+            outputs[2] = (int) ((time-maxtime)/86400/1000); //sale
+            
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException
     {
         InwardMap im = new InwardMap();
-        try(PrintWriter pw = new PrintWriter(new File(datafile)))
+        String datafile = "dataset-weights.csv";
+        try (PrintWriter pw = new PrintWriter(new File(datafile)))
         {
-            StringBuilder sb = new StringBuilder(); 
+            StringBuilder sb = new StringBuilder();
             BufferedReader reader;
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             try
             {
-                reader = new BufferedReader(new FileReader("D:\\BE\\NPM\\inward.csv"));
+                reader = new BufferedReader(new FileReader("inward.csv"));
                 String line;
                 while ((line = reader.readLine()) != null)
                 {
@@ -110,37 +113,37 @@ public class InwardMap
 
             try
             {
-                int []prices=new int[2];
-                reader = new BufferedReader(new FileReader("D:\\BE\\NPM\\dataset.csv"));
+                int[] prices = new int[3];
+                reader = new BufferedReader(new FileReader("dataset.csv"));
                 String line;
                 while ((line = reader.readLine()) != null)
                 {
                     String[] tokens = line.split(",");
+//                    System.out.println(Arrays.toString(tokens));
                     Date d = sdf.parse(tokens[0]);
-                    sb.append(sdf.format(c.getTime())).append(",");
+                    sb.append(sdf.format(d)).append(",");
                     for (int i = 1; i < tokens.length; i++)
                     {
-                        int id = Integer.parseInt(tokens[0]);
-                        int value=0;
-                        if(id==1)
+                        int id = Integer.parseInt(tokens[i]);
+                        int value = 0;
+                        if (id == 1)
                         {
-                            im.getEntry(i-1, d, prices);
-                            value = prices[1]-prices[0];
+                            im.getEntry(i - 1, d, prices);
+                            int days=prices[2];
+                            value = days==0?0: (prices[1] - prices[0])/days;
+//                            System.out.println("value = " + value);
                         }
-                         sb.append(value).append(",");
-                         
-                        
-                         pw.println(sb);
-                         sb.length(0);
+                        sb.append(value).append(",");
                     }
-                    
+                    pw.println(sb);
+                    sb.setLength(0);
                 }
                 pw.close();
                 reader.close();
             } catch (Exception e)
             {
                 e.printStackTrace();
-            }            
+            }
         }
     }
 

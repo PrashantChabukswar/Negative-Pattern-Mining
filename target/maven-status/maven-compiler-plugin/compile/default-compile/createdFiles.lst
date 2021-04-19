@@ -1,5 +1,4 @@
 fpgrowth\FPGrowth.class
-fpgrowth\FrequencyComparatorInHeaderTable.class
+com\mycompany\npm\InwardMap.class
 fpgrowth\FPtree.class
 fpgrowth\Main.class
-highutilitymining\SynthDatasetGenerator.class

@@ -3,9 +3,9 @@ package fpgrowth;
 import java.util.Collections;
 import java.util.Comparator;
 
-class FrequencyComparatorInHeaderTable implements Comparator<FPtree>{
+public class FrequencyComparator implements Comparator<FPtree>{
 
-    public FrequencyComparatorInHeaderTable() {
+    public FrequencyComparator() {
     }
 
     public int compare(FPtree o1, FPtree o2) {

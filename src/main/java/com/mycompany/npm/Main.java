@@ -2,17 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpgrowth;
+package com.mycompany.npm;
 
+import fpgrowth.FPGrowth;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class Main
 {
 
     static int threshold = 5;
-    static String file = "dataset.csv";
+    static String file = "dataset-weights.csv";
 
     public static void main(String[] args) throws FileNotFoundException
     {

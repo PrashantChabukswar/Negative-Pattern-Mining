@@ -32,11 +32,11 @@ public class InwardMap
 //    int itemcount;
     List<List<Object[]>> list = new ArrayList<>();
 
-    public void addEntry(int itemid, Date d, int purchase_price, int sale_price)
+    public void addEntry(int itemid,  int purchase_price, int sale_price)
     {
         Object[] entry = new Object[]
         {
-            d.getTime(), purchase_price, sale_price
+             purchase_price, sale_price
         };
 
         if (list.size() <= itemid || list.get(itemid) == null)
@@ -52,22 +52,22 @@ public class InwardMap
         entryList.add(entry);
     }
 
-    public void getEntry(int itemid, Date d, int[] outputs)
+    public void getEntry(int itemid,  int[] outputs)
     {
         List<Object[]> entryList = list.get(itemid);
-        long time = d.getTime();
+        //long time = d.getTime();
 
-        long maxtime = 0;
+        //long maxtime = 0;
         Object[] entry = null;
 
         for (Object[] e : entryList)
         {
             long t = (long) e[0];
-            if (t <= time && t > maxtime)
+            /*if (t <= time && t > maxtime)
             {
                 entry = e;
                 maxtime = t;
-            }
+            }*/
         }
 
         if (entry == null)
@@ -90,7 +90,7 @@ public class InwardMap
         {
             StringBuilder sb = new StringBuilder();
             BufferedReader reader;
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+           SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             try
             {
                 reader = new BufferedReader(new FileReader("inward.csv"));
@@ -103,7 +103,7 @@ public class InwardMap
                     int price1 = Integer.parseInt(tokens[2]);
                     int price2 = Integer.parseInt(tokens[3]);
 
-                    im.addEntry(id, d, price1, price2);
+                    im.addEntry(id, price1, price2);
                 }
                 reader.close();
             } catch (Exception e)
@@ -128,7 +128,7 @@ public class InwardMap
                         int value = 0;
                         if (id == 1)
                         {
-                            im.getEntry(i - 1, d, prices);
+                            im.getEntry(i - 1,  prices);
                             int days=prices[2];
                             value = days==0?0: (prices[1] - prices[0])/days;
 //                            System.out.println("value = " + value);
